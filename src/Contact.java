@@ -6,16 +6,14 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public class Contact {
-    private String name;
+    protected static String name;
 
-    private long phoneNumber;
-    ArrayList<String>contacts;
+    protected static long phoneNumber;
 
     // constructors ---
     public Contact(String name, long phoneNumber) {
-        this.name = name;
-        this.phoneNumber = phoneNumber;
-        this.contacts = new ArrayList<>();
+        Contact.name = name;
+        Contact.phoneNumber = phoneNumber;
     }
 
     //    Getters and setters--
