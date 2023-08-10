@@ -14,13 +14,13 @@ public class ContactManagerApplication extends Contact {
 
     static Input userResponse = new Input();
 
-    static ArrayList<Contact> contactInfo;
+    static ArrayList<Contact> contactInfo = new ArrayList<>();
 
     public ContactManagerApplication(String name, long phoneNumber) {
         super(name, phoneNumber);
     }
 
-    public void createDirectoryFile() {
+    public static void createDirectoryFile() {
         String directory = "Contacts";
         String fileName = "contacts.txt";
 
@@ -51,21 +51,15 @@ public class ContactManagerApplication extends Contact {
         String userInput = userResponse.getString();
         System.out.println("Enter the phone number");
         long userNumber = userResponse.getLong();
-        contactInfo = new ArrayList<>();
+//        contactInfo = new ArrayList<>();
         contactInfo.add(new Contact(userInput, userNumber));
         renderContactList();
     }
 
     public static List<Contact> renderContactList() {
         Path p = Paths.get("Contacts/contacts.txt");
-        contactInfo = new ArrayList<>();
-        contactInfo.add(new Contact("Emily", 2101234567));
-        contactInfo.add(new Contact("Presley", 2101234567));
-        contactInfo.add(new Contact("Draco", 2101234567));
-        contactInfo.add(new Contact("Hermione", 2101234567));
-        contactInfo.add(new Contact("Hagrid", 2101234567));
-        contactInfo.add(new Contact("Ron", 2101234567));
-        contactInfo.add(new Contact("Luna", 2101234567));
+//        contactInfo = new ArrayList<>();
+
 
         System.out.printf("%-10s%-10s\n", "name", "phone number");
         for (Contact contact : contactInfo) {
@@ -97,9 +91,25 @@ public class ContactManagerApplication extends Contact {
         }
     }
 
+    public static void populate () {
+//        contactInfo.add(new Contact("Emily", 2101234567));
+//        contactInfo.add(new Contact("Presley", 2101234567));
+//        contactInfo.add(new Contact("Draco", 2101234567));
+//        contactInfo.add(new Contact("Hermione", 2101234567));
+//        contactInfo.add(new Contact("Hagrid", 2101234567));
+//        contactInfo.add(new Contact("Ron", 2101234567));
+//        contactInfo.add(new Contact("Luna", 2101234567));
+
+        // read all lines from contacts.txt
+        // convert from strings to contact objects
+        // and add to the contactInfo arraylist
+    }
+
     public static void main(String[] args) {
+        populate();
         mainMenu();
         addContact();
+        createDirectoryFile();
     }
 
 
