@@ -4,7 +4,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import util.Input;
 
@@ -68,10 +70,16 @@ public class ContactManagerApplication extends Contact {
         contactInfo.add(contact6);
         contactInfo.add(contact7);
 
-        System.out.println(toString(contactInfo));
+        System.out.printf("%-10s%-10s\n", "name", "phone number");
+
+        for (Contact contact : contactInfo) {
+            System.out.printf(String.format("%-10s%-10s\n", name, phoneNumber));
+        }
         return contactInfo;
 
     }
+
+
 
     public static String toString(List<Contact> contact) {
         return name + phoneNumber;
@@ -88,14 +96,14 @@ public class ContactManagerApplication extends Contact {
         int userInput = userResponse.getInt(1,5);
         if (userInput == 1){
             renderContactList();
-        } else if (userInput == 2) {
-            addContact();
-        } else if (userInput == 3) {
-            searchContact();
-        } else if (userInput == 4) {
-            deleteContact();
-        } else if (userInput == 5) {
-            exitMenu;
+//        } else if (userInput == 2) {
+//            addContact();
+//        } else if (userInput == 3) {
+//            searchContact();
+//        } else if (userInput == 4) {
+//            deleteContact();
+//        } else if (userInput == 5) {
+//            exitMenu;
         }
     }
 
