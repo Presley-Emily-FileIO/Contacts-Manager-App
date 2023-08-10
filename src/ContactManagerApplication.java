@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +10,7 @@ import util.Input;
 
 public class ContactManagerApplication extends Contact {
 
-    Input userResponse = new Input();
+    static Input userResponse = new Input();
 
     public ContactManagerApplication(String name, long phoneNumber) {
         super(name, phoneNumber);
@@ -76,8 +77,31 @@ public class ContactManagerApplication extends Contact {
         return name + phoneNumber;
     }
 
+    public static void mainMenu(){
+        System.out.printf("1.View Contacts. \n");
+        System.out.printf("2.Add a new contact. \n");
+        System.out.printf("3.Search a contact by name. \n");
+        System.out.printf("4.Delete a contact. \n");
+        System.out.printf("5.Exit. \n");
+        System.out.printf("What would you like to do today?(Enter a number 1-5)\n ");
+        System.out.printf("- - - - - - - - - - - - - - - - - - - - - - - - - - \n");
+        int userInput = userResponse.getInt(1,5);
+        if (userInput == 1){
+            renderContactList();
+        } else if (userInput == 2) {
+            addContact();
+        } else if (userInput == 3) {
+            searchContact();
+        } else if (userInput == 4) {
+            deleteContact();
+        } else if (userInput == 5) {
+            exitMenu;
+        }
+    }
+
     public static void main(String[] args) {
         renderContactList();
+        mainMenu();
     }
 
 

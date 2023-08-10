@@ -21,7 +21,7 @@ public class Contact {
         return name;
     }
     public void setName(String name) {
-        this.name = name;
+        Contact.name = name;
     }
 
     public long getPhoneNumber() {
@@ -29,7 +29,7 @@ public class Contact {
     }
 
     public void setPhoneNumber(long phoneNumber) {
-        this.phoneNumber = phoneNumber;
+        Contact.phoneNumber = phoneNumber;
     }
 
 
