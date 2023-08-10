@@ -6,14 +6,14 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public class Contact {
-    protected static String name;
+    protected String name;
 
-    protected static long phoneNumber;
+    protected long phoneNumber;
 
     // constructors ---
     public Contact(String name, long phoneNumber) {
-        Contact.name = name;
-        Contact.phoneNumber = phoneNumber;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
     }
 
     //    Getters and setters--
@@ -21,7 +21,7 @@ public class Contact {
         return name;
     }
     public void setName(String name) {
-        Contact.name = name;
+        this.name = name;
     }
 
     public long getPhoneNumber() {
@@ -29,7 +29,7 @@ public class Contact {
     }
 
     public void setPhoneNumber(long phoneNumber) {
-        Contact.phoneNumber = phoneNumber;
+        this.phoneNumber = phoneNumber;
     }
 
 

@@ -14,6 +14,8 @@ public class ContactManagerApplication extends Contact {
 
     static Input userResponse = new Input();
 
+    static ArrayList<Contact> contactInfo;
+
     public ContactManagerApplication(String name, long phoneNumber) {
         super(name, phoneNumber);
     }
@@ -43,47 +45,35 @@ public class ContactManagerApplication extends Contact {
 
     }
 
-//    public void addContact (Contact contact) {
-
-//            Contact.add(userResponse.getString());
-
-//    }
+    public static void addContact() {
+        Path p = Paths.get("Contacts/contacts.txt");
+        System.out.println("Enter the name!");
+        String userInput = userResponse.getString();
+        System.out.println("Enter the phone number");
+        long userNumber = userResponse.getLong();
+        contactInfo = new ArrayList<>();
+        contactInfo.add(new Contact(userInput, userNumber));
+        renderContactList();
+    }
 
     public static List<Contact> renderContactList() {
         Path p = Paths.get("Contacts/contacts.txt");
-
-        Contact contact1 = new Contact("Emily", 2101234567);
-        Contact contact2 = new Contact("Presley", 2101234567);
-        Contact contact3 = new Contact("Draco", 2101234567);
-        Contact contact4 = new Contact("Hermione", 2101234567);
-        Contact contact5 = new Contact("Ron", 2101234567);
-        Contact contact6 = new Contact("Luna", 2101234567);
-        Contact contact7 = new Contact("Hagrid", 2101234567);
-
-
-        List<Contact> contactInfo = new ArrayList<>();
-        contactInfo.add(contact1);
-        contactInfo.add(contact2);
-        contactInfo.add(contact3);
-        contactInfo.add(contact4);
-        contactInfo.add(contact5);
-        contactInfo.add(contact6);
-        contactInfo.add(contact7);
+        contactInfo = new ArrayList<>();
+        contactInfo.add(new Contact("Emily", 2101234567));
+        contactInfo.add(new Contact("Presley", 2101234567));
+        contactInfo.add(new Contact("Draco", 2101234567));
+        contactInfo.add(new Contact("Hermione", 2101234567));
+        contactInfo.add(new Contact("Hagrid", 2101234567));
+        contactInfo.add(new Contact("Ron", 2101234567));
+        contactInfo.add(new Contact("Luna", 2101234567));
 
         System.out.printf("%-10s%-10s\n", "name", "phone number");
-
         for (Contact contact : contactInfo) {
-            System.out.printf(String.format("%-10s%-10s\n", name, phoneNumber));
+            System.out.printf(String.format("%-10s%-10s\n", contact.getName(), contact.getPhoneNumber()));
         }
         return contactInfo;
-
     }
 
-
-
-    public static String toString(List<Contact> contact) {
-        return name + phoneNumber;
-    }
 
     public static void mainMenu(){
         System.out.printf("1.View Contacts. \n");
@@ -108,8 +98,8 @@ public class ContactManagerApplication extends Contact {
     }
 
     public static void main(String[] args) {
-        renderContactList();
         mainMenu();
+        addContact();
     }
 
 

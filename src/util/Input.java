@@ -2,6 +2,8 @@ package util;
 
 import java.util.Scanner;
 
+import static java.lang.Long.parseLong;
+
 public class Input {
     private Scanner scanner;
 
@@ -28,6 +30,14 @@ public class Input {
     public int getInt() {
         try {
             return Integer.parseInt(this.getString());
+        } catch (NumberFormatException e){
+            System.out.println("You must enter a whole number");
+            return getInt();
+        }
+    }
+    public long getLong() {
+        try {
+            return parseLong(this.getString());
         } catch (NumberFormatException e){
             System.out.println("You must enter a whole number");
             return getInt();
