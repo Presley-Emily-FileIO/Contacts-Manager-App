@@ -2,13 +2,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import util.Input;
+
+import static java.lang.Long.parseLong;
 
 public class ContactManagerApplication extends Contact {
 
@@ -21,6 +20,7 @@ public class ContactManagerApplication extends Contact {
     public ContactManagerApplication(String name, long phoneNumber) {
         super(name, phoneNumber);
     }
+
 // Checks to see if directory and fileName exist if not makes them
     public static void createDirectoryFile() {
         Path contactsDirectory = Paths.get(directory);
@@ -41,14 +41,23 @@ public class ContactManagerApplication extends Contact {
             }
         }
     }
-
+    public static String formatNumber (long phoneNumber) {
+        String input = Long.toString(phoneNumber);
+        if (input.length() >= 10) {
+            String output = "(" + input.substring(0, 3) + ") " + input.substring(3, 6) + "-" + input.substring(6, 10);
+            return output;
+        } else  {
+            String output2  =  input.substring(0, 3) + "-" + input.substring(3, 7);
+            return output2;
+        }
+    }
 
 
     public static void addContact() {
         System.out.println("Enter the name!");
         String userInput = userResponse.getString();
         System.out.println("Enter the phone number");
-        long userNumber = userResponse.getLong();
+        Long userNumber = userResponse.getLong();
         contactInfo.add(new Contact(userInput, userNumber));
         saveContactList();
         System.out.println("Contact added successfully");
@@ -113,7 +122,7 @@ public class ContactManagerApplication extends Contact {
                 String[] parts = line.split(",");
                 if (parts.length == 2) {
                     String name = parts[0];
-                    long phoneNumber = Long.parseLong(parts[1]);
+                    long phoneNumber = parseLong(parts[1]);
                     contactInfo.add(new Contact(name, phoneNumber));
                 }
             }
@@ -127,10 +136,12 @@ public class ContactManagerApplication extends Contact {
         if (contactInfo.isEmpty()) {
             System.out.println("Contact list is empty.");
         } else {
-            System.out.printf("%-20s%-15s\n", "Name", "Phone Number");
+            System.out.printf("%-20s   |  %-15s    |\n", "Name", "Phone Number");
+            System.out.printf("_____________________________________________|\n");
             for (Contact contact : contactInfo) {
-                System.out.printf("%-20s%-15s\n", contact.getName(), contact.getPhoneNumber());
+                System.out.printf("%-20s   |  %-15s    |\n", contact.getName(), formatNumber(contact.getPhoneNumber()));
             }
+            System.out.printf("\n");
         }
     }
 
@@ -141,10 +152,11 @@ public class ContactManagerApplication extends Contact {
         System.out.printf("2.Add a new contact. \n");
         System.out.printf("3.Search a contact by name. \n");
         System.out.printf("4.Delete a contact. \n");
-        System.out.printf("5.Exit. \n");
-        System.out.printf("What would you like to do today?(Enter a number 1-5)\n ");
+        System.out.printf("5.Feeling frisky?\n");
+        System.out.printf("6.Exit. \n");
+        System.out.printf("What would you like to do today?(Enter a number 1-6)\n ");
         System.out.printf("- - - - - - - - - - - - - - - - - - - - - - - - - - \n");
-        int userInput = userResponse.getInt(1, 5);
+        int userInput = userResponse.getInt(1, 6);
             if (userInput == 1) {
                 renderContactList();
             } else if (userInput == 2) {
@@ -154,10 +166,33 @@ public class ContactManagerApplication extends Contact {
             } else if (userInput == 4) {
                 deleteContact();
             } else if (userInput == 5) {
+                kittyCat();
+            } else if (userInput == 6) {
                 saveContactList();
                 System.out.println("Goodbye!");
                 System.exit(0);
             }
+        }
+
+        public static void kittyCat () {
+            System.out.print("""
+                    
+                                             \s
+                           \\`*-.                   \s
+                            )  _`-.                \s
+                           .  : `. .               \s
+                           : _   '  \\              \s
+                           ; *` _.   `*-._         \s
+                           `-.-'          `-.      \s
+                             ;       `       `.    \s
+                             :.       .        \\   \s
+                             . \\  .   :   .-'   .  \s
+                             '  `+.;  ;  '      :  \s
+                             :  '  |    ;       ;-.\s
+                             ; '   : :`-:     _.`* ;
+                    [bug] .*' /  .*' ; .*`- +'  `*'\s
+                          `*-*   `*-*  `*-*'
+                    """);
         }
 
     public static void main(String[] args) {
@@ -167,9 +202,9 @@ public class ContactManagerApplication extends Contact {
         boolean quit = false;
         while (!quit) {
             mainMenu();
-            System.out.println("Do you want to quit? (yes/no)");
+            System.out.println("Return to main menu? (yes/no)");
             String userChoice = userResponse.getString().toLowerCase();
-            if (userChoice.equals("yes")) {
+            if (userChoice.equals("no")) {
                 saveContactList();
                 System.out.println("Goodbye!");
                 quit = true;
