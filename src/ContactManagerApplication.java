@@ -172,6 +172,7 @@ public class ContactManagerApplication extends Contact {
             }
         }
 
+        // Spicy cat method
         public static void kittyCat () {
             System.out.print("""
                     
@@ -191,6 +192,7 @@ public class ContactManagerApplication extends Contact {
                     [bug] .*' /  .*' ; .*`- +'  `*'\s
                           `*-*   `*-*  `*-*'
                     """);
+            System.out.printf("\nMeow Meow \n");
         }
 
     public static void main(String[] args) {
