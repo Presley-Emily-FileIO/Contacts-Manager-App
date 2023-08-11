@@ -53,6 +53,7 @@ public class ContactManagerApplication extends Contact {
     }
 
 
+
     public static void addContact() {
         System.out.println("Enter the name!");
         String userInput = userResponse.getString();
