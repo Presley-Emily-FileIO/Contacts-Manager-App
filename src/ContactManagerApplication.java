@@ -15,15 +15,14 @@ public class ContactManagerApplication extends Contact {
     static Input userResponse = new Input();
 
     static ArrayList<Contact> contactInfo = new ArrayList<>();
+    static String directory = "Contacts";
+    static String fileName = "contacts.txt";
 
     public ContactManagerApplication(String name, long phoneNumber) {
         super(name, phoneNumber);
     }
-
+// Checks to see if directory and fileName exist if not makes them
     public static void createDirectoryFile() {
-        String directory = "Contacts";
-        String fileName = "contacts.txt";
-
         Path contactsDirectory = Paths.get(directory);
         Path contactsFile = Paths.get(fileName);
 
@@ -41,35 +40,103 @@ public class ContactManagerApplication extends Contact {
                 e.printStackTrace();
             }
         }
-
-
     }
 
+
+
     public static void addContact() {
-        Path p = Paths.get("Contacts/contacts.txt");
         System.out.println("Enter the name!");
         String userInput = userResponse.getString();
         System.out.println("Enter the phone number");
         long userNumber = userResponse.getLong();
-//        contactInfo = new ArrayList<>();
         contactInfo.add(new Contact(userInput, userNumber));
+        saveContactList();
+        System.out.println("Contact added successfully");
+    }
+
+
+    public static void  deleteContact() {
+        System.out.println("Who would you like to Delete?");
         renderContactList();
-    }
-
-    public static List<Contact> renderContactList() {
-        Path p = Paths.get("Contacts/contacts.txt");
-//        contactInfo = new ArrayList<>();
-
-
-        System.out.printf("%-10s%-10s\n", "name", "phone number");
+        String userInput = userResponse.getString();
+        Contact contactToRemove = null;
         for (Contact contact : contactInfo) {
-            System.out.printf(String.format("%-10s%-10s\n", contact.getName(), contact.getPhoneNumber()));
+            if (contact.getName().equalsIgnoreCase(userInput)) {
+                contactToRemove = contact;
+                break;
+            }
         }
-        return contactInfo;
+        if (contactToRemove != null) {
+            contactInfo.remove(contactToRemove);
+            saveContactList();
+            System.out.println(userInput + " has been deleted.");
+        } else {
+            System.out.println(userInput + " doesn't exist.");
+        }
+    }
+
+    public static void searchContact(){
+        System.out.println("Who would you like to search for?");
+        String userInput = userResponse.getString();
+        boolean contactFound = false;
+        for (Contact contact : contactInfo) {
+            if (contact.getName().trim().equalsIgnoreCase(userInput.trim())) {
+                System.out.println(contact.getName() + " " + contact.getPhoneNumber());
+                contactFound = true;
+                break;
+            }
+        }
+        if (!contactFound) {
+            System.out.println("Sorry, no one with that name!");
+        }
+    }
+
+    public static void saveContactList() {
+        Path contactsFile = Paths.get(directory, fileName);
+        try {
+            List<String> contactLines = new ArrayList<>();
+            for (Contact contact : contactInfo) {
+                contactLines.add(contact.getName() + "," + contact.getPhoneNumber());
+            }
+            Files.write(contactsFile, contactLines);  // Write the contact information to the file
+        } catch (IOException e) {
+            System.err.println("Error saving contact list: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public static void loadContactList() {
+        Path contactsFile = Paths.get(directory, fileName);
+        try {
+            List<String> lines = Files.readAllLines(contactsFile);
+            for (String line : lines) {
+                String[] parts = line.split(",");
+                if (parts.length == 2) {
+                    String name = parts[0];
+                    long phoneNumber = Long.parseLong(parts[1]);
+                    contactInfo.add(new Contact(name, phoneNumber));
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading contact list: " + e.getMessage());
+        }
     }
 
 
-    public static void mainMenu(){
+    public static void renderContactList() {
+        if (contactInfo.isEmpty()) {
+            System.out.println("Contact list is empty.");
+        } else {
+            System.out.printf("%-20s%-15s\n", "Name", "Phone Number");
+            for (Contact contact : contactInfo) {
+                System.out.printf("%-20s%-15s\n", contact.getName(), contact.getPhoneNumber());
+            }
+        }
+    }
+
+
+
+    public static void mainMenu() {
         System.out.printf("1.View Contacts. \n");
         System.out.printf("2.Add a new contact. \n");
         System.out.printf("3.Search a contact by name. \n");
@@ -77,39 +144,37 @@ public class ContactManagerApplication extends Contact {
         System.out.printf("5.Exit. \n");
         System.out.printf("What would you like to do today?(Enter a number 1-5)\n ");
         System.out.printf("- - - - - - - - - - - - - - - - - - - - - - - - - - \n");
-        int userInput = userResponse.getInt(1,5);
-        if (userInput == 1){
-            renderContactList();
-//        } else if (userInput == 2) {
-//            addContact();
-//        } else if (userInput == 3) {
-//            searchContact();
-//        } else if (userInput == 4) {
-//            deleteContact();
-//        } else if (userInput == 5) {
-//            exitMenu;
+        int userInput = userResponse.getInt(1, 5);
+            if (userInput == 1) {
+                renderContactList();
+            } else if (userInput == 2) {
+                addContact();
+            } else if (userInput == 3) {
+                searchContact();
+            } else if (userInput == 4) {
+                deleteContact();
+            } else if (userInput == 5) {
+                saveContactList();
+                System.out.println("Goodbye!");
+                System.exit(0);
+            }
         }
-    }
-
-    public static void populate () {
-//        contactInfo.add(new Contact("Emily", 2101234567));
-//        contactInfo.add(new Contact("Presley", 2101234567));
-//        contactInfo.add(new Contact("Draco", 2101234567));
-//        contactInfo.add(new Contact("Hermione", 2101234567));
-//        contactInfo.add(new Contact("Hagrid", 2101234567));
-//        contactInfo.add(new Contact("Ron", 2101234567));
-//        contactInfo.add(new Contact("Luna", 2101234567));
-
-        // read all lines from contacts.txt
-        // convert from strings to contact objects
-        // and add to the contactInfo arraylist
-    }
 
     public static void main(String[] args) {
-        populate();
-        mainMenu();
-        addContact();
         createDirectoryFile();
+        loadContactList();
+
+        boolean quit = false;
+        while (!quit) {
+            mainMenu();
+            System.out.println("Do you want to quit? (yes/no)");
+            String userChoice = userResponse.getString().toLowerCase();
+            if (userChoice.equals("yes")) {
+                saveContactList();
+                System.out.println("Goodbye!");
+                quit = true;
+            }
+        }
     }
 
 
