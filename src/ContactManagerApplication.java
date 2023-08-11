@@ -131,7 +131,6 @@ public class ContactManagerApplication extends Contact {
         }
     }
 
-
     public static void renderContactList() {
         if (contactInfo.isEmpty()) {
             System.out.println("Contact list is empty.");
@@ -144,7 +143,6 @@ public class ContactManagerApplication extends Contact {
             System.out.printf("\n");
         }
     }
-
 
 
     public static void mainMenu() {
